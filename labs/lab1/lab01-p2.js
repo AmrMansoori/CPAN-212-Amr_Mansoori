@@ -27,7 +27,9 @@ const app = http.createServer((req, res) => {
       "I am a soccer player. My aim is to become a freelance in the field of Microsoft dev. Streamling business workflows using Microsoft PowerPlatform. I love web devlopment, and i look forward learning about how the webserver is setup and MERN so I start earnign money form it in the industry. I require a guideline to follow and a mentor, to make sure my learning path is correct and i am not wasting time."
     );
   } else {
-    res.end("Page not found");
+    const errorPage = fs.readFileSync(path.join("html", "errorfile.html"));
+    res.end(errorPage);
+    // res.end("Page not found");
   }
 });
 
