@@ -13,7 +13,6 @@ const __dirname = path.dirname(__filename); // this will link us to the router f
 const upload_directory = path.join(__dirname, "../uploads");
 
 router.get("/single", (req, res) => {
-  
   // we read the directory items synchronously to not trip the async speed
   let files_array = fs.readdirSync(upload_directory);
   // error checking
@@ -28,14 +27,28 @@ router.get("/single", (req, res) => {
   res.sendFile(path.join(upload_directory, filename));
 });
 
-// helper function for multiple 
+router.get("/multiple", (req, res) => {
+  let files_array = fs.readdirSync(upload_directory);
+
+  if (files_array.length == 0) {
+    return res.status(503).send({
+      message: "No images",
+    });
+  }
+
+  let filenames = _.sampleSize(files_array, 3);
+
+  res.json(filenames); //->[01,02,03,04,05]
+});
+
+// helper function for multiple
 router.get("/file/:filename", (req, res) => {
   res.sendFile(path.join(__dirname, "../uploads", req.params.filename));
 });
 
-// TO DO, send array of filenames [TODO]
-router.get("/multiple", (req, res) => {
-  res.send("TODO");
-});
+// // TO DO, send array of filenames [TODO]
+// router.get("/multiple", (req, res) => {
+//   res.send("TODO");
+// });
 
 export default router;
